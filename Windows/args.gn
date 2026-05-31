@@ -45,3 +45,4 @@ dcheck_always_on = false
 use_siso = true
 use_remoteexec = false
 use_sized_deallocation = true
+use_text_section_splitting = true
