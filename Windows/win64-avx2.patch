@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index e1da11405c1f6..f288ab130be01 100644
+index e1da11405c1f6..2ee52d476ca9d 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -529,10 +529,10 @@ config("compiler") {
@@ -72,7 +72,7 @@ index e1da11405c1f6..f288ab130be01 100644
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1299,8 +1321,36 @@ config("thinlto_optimize_max") {
+@@ -1299,8 +1321,37 @@ config("thinlto_optimize_max") {
  
      if (is_win) {
        ldflags = [ "/opt:lldlto=" + lto_opt_level ]
@@ -89,6 +89,7 @@ index e1da11405c1f6..f288ab130be01 100644
 +        "-mllvm:-x86-align-branch-boundary=32",
 +        "-mllvm:-x86-align-branch=jcc+jmp+indirect",
 +        "-mllvm:-x86-cmov-converter",
++      ]
      } else {
        ldflags = [ "-Wl,--lto-O" + lto_opt_level ]
 +      ldflags += [ "-Wl,--lto-CGO3" ]
@@ -109,7 +110,7 @@ index e1da11405c1f6..f288ab130be01 100644
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1723,7 +1773,7 @@ config("runtime_library") {
+@@ -1723,7 +1774,7 @@ config("runtime_library") {
    }
  
    if (use_safe_libcxx) {
@@ -118,7 +119,7 @@ index e1da11405c1f6..f288ab130be01 100644
    } else {
      defines += [ "_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_NONE" ]
    }
-@@ -2642,10 +2692,13 @@ config("optimize_max") {
+@@ -2642,10 +2693,13 @@ config("optimize_max") {
      # Favor speed over size, /O2 must be before the common flags.
      # /O2 implies /Ot, /Oi, and /GF.
      cflags = [ "/O2" ] + common_optimize_on_cflags
@@ -153,7 +154,7 @@ index ae62bab587e7d..138bb533ad6de 100644
          is_a_target_toolchain) {
        cpu_abi_cflags += [ "-march=$cros_target_cpu_arch" ]
 diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
-index 101c2339697ca..e5859690dc5d0 100644
+index 101c2339697ca..2493be36a14c0 100644
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
 @@ -120,7 +120,30 @@ config("compiler") {
@@ -1478,4 +1479,3 @@ index 8e650078a5816..6614714c08c78 100644
  
  // When enabled, allows AV1 HW encoding to be used for WebRTC streams, if the
  // platform accelerator supports encoding of AV1.
- 
