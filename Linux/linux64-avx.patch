@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index e1da11405c1f6..e46b511928023 100644
+index e1da11405c1f6..c14f10cc551ee 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -529,10 +529,10 @@ config("compiler") {
@@ -23,7 +23,7 @@ index e1da11405c1f6..e46b511928023 100644
      "-Zexternal-clangrt",
 +
 +    "-Ctarget-cpu=x86-64-v2",
-+    "-Ctarget-feature=+avx,+pclmulqdq,+xsave",
++    "-Ctarget-feature=+avx",
 +    "-Cllvm-args=-fp-contract=off",
 +    "-Ctarget-feature=-fast-gather,+prefer-no-gather,+prefer-no-scatter",
    ]
@@ -95,24 +95,19 @@ index e1da11405c1f6..e46b511928023 100644
    rustflags = [ "-Copt-level=3" ]
  }
 diff --git a/build/config/compiler_cpu_abi.gn b/build/config/compiler_cpu_abi.gn
-index ae62bab587e7d..6d47288255083 100644
+index ae62bab587e7d..4769d5bdec4ff 100644
 --- a/build/config/compiler_cpu_abi.gn
 +++ b/build/config/compiler_cpu_abi.gn
-@@ -55,7 +55,17 @@ if ((is_posix && !is_apple) || is_fuchsia) {
+@@ -55,7 +55,12 @@ if ((is_posix && !is_apple) || is_fuchsia) {
        cpu_abi_cflags += [ "-m64" ]
        cpu_abi_ldflags += [ "-m64" ]
      }
 -    cpu_abi_cflags += [ "-msse3" ]
 +    cpu_abi_cflags += [
 +      "-march=x86-64-v2",
-+      "-mcx16",
-+      "-msahf",
 +      "-mavx",
-+      "-mpclmul",
-+      "-mxsave",
 +      "-mno-gather",
 +      "-mno-scatter",
-+      "-mno-bmi2",
 +    ]
      if (target_os == "chromeos" && cros_target_cpu_arch != "" &&
          is_a_target_toolchain) {
@@ -461,7 +456,6 @@ index 8e650078a5816..6614714c08c78 100644
  
  // When enabled, allows AV1 HW encoding to be used for WebRTC streams, if the
  // platform accelerator supports encoding of AV1.
-
 diff --git a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc b/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
 index 2605b0e267a0e..8bf1a184040d2 100644
 --- a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
