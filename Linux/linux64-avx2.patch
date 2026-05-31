@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index e1da11405c1f6..74a22bc4399d3 100644
+index e1da11405c1f6..08914e198ad81 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -529,10 +529,10 @@ config("compiler") {
@@ -26,19 +26,18 @@ index e1da11405c1f6..74a22bc4399d3 100644
      }
  
      # Enable ELF CREL (see crbug.com/357878242) for all platforms that use ELF.
-@@ -980,6 +980,11 @@ config("compiler") {
+@@ -980,6 +980,10 @@ config("compiler") {
  
      # We use clang-rt sanitizer runtimes.
      "-Zexternal-clangrt",
 +
-+    "-Ctarget-cpu=x86-64-v3",
-+    "-Cllvm-args=-fp-contract=fast",
-+    "-Ztune-cpu=skylake",
-+    "-Ctarget-feature=-fast-gather,+prefer-no-gather,+prefer-no-scatter",
++    "-Ctarget-cpu=x86-64-v2",
++    "-Ctarget-feature=+avx,+aes,+pclmulqdq,+xsave",
++    "-Cllvm-args=-fp-contract=off",
    ]
  
    if (!is_win || force_rustc_color_output) {
-@@ -1260,12 +1265,23 @@ config("disallow_unstable_features") {
+@@ -1260,12 +1264,23 @@ config("disallow_unstable_features") {
  # building with ThinLTO, no optimization is performed in the link step.
  config("thinlto_optimize_default") {
    if (!is_debug && use_thin_lto && is_a_target_toolchain) {
@@ -63,7 +62,7 @@ index e1da11405c1f6..74a22bc4399d3 100644
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1301,6 +1317,21 @@ config("thinlto_optimize_max") {
+@@ -1301,6 +1316,21 @@ config("thinlto_optimize_max") {
        ldflags = [ "/opt:lldlto=" + lto_opt_level ]
      } else {
        ldflags = [ "-Wl,--lto-O" + lto_opt_level ]
@@ -85,7 +84,7 @@ index e1da11405c1f6..74a22bc4399d3 100644
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1308,7 +1339,7 @@ config("thinlto_optimize_max") {
+@@ -1308,7 +1338,7 @@ config("thinlto_optimize_max") {
        # Rust to preemptively do so during compilation too or they conflict. But
        # we do want Rust to generate LTO metadata in order for the linker to do
        # its job.
@@ -94,7 +93,7 @@ index e1da11405c1f6..74a22bc4399d3 100644
      } else {
        # Don't include bitcode if it won't be used.
        rustflags = [ "-Cembed-bitcode=no" ]
-@@ -1723,7 +1754,7 @@ config("runtime_library") {
+@@ -1723,7 +1753,7 @@ config("runtime_library") {
    }
  
    if (use_safe_libcxx) {
@@ -103,7 +102,7 @@ index e1da11405c1f6..74a22bc4399d3 100644
    } else {
      defines += [ "_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_NONE" ]
    }
-@@ -2645,7 +2676,7 @@ config("optimize_max") {
+@@ -2645,7 +2675,7 @@ config("optimize_max") {
    } else if (optimize_for_fuzzing) {
      cflags = [ "-O1" ] + common_optimize_on_cflags
    } else {
@@ -302,7 +301,7 @@ index 5cced7e815d64..3c422a75b4527 100755
              compression_opt = "_binary_payload w0.gzdio"
  
 diff --git a/content/common/gpu_pre_sandbox_hook_linux.cc b/content/common/gpu_pre_sandbox_hook_linux.cc
-index 2e53794fa3374..80eede44ea2e3 100644
+index 2e53794fa3374..1786fda6f463d 100644
 --- a/content/common/gpu_pre_sandbox_hook_linux.cc
 +++ b/content/common/gpu_pre_sandbox_hook_linux.cc
 @@ -262,6 +262,18 @@ void AddAmdGpuPermissions(std::vector<BrokerFilePermission>* permissions) {
@@ -318,9 +317,9 @@ index 2e53794fa3374..80eede44ea2e3 100644
 +      "/usr/lib/dri/radeonsi_dri.so",
 +      "/usr/lib/libvulkan_radeon.so",
 +      "/usr/share/vulkan/icd.d",
-+      "/usr/share/vulkan/icd.d/radeon_icd.x86_64.json"
++      "/usr/share/vulkan/icd.d/radeon_icd.x86_64.json",
 +      "/etc/vulkan/icd.d",
-+      "/etc/vulkan/icd.d/radeon_icd.x86_64.json"
++      "/etc/vulkan/icd.d/radeon_icd.x86_64.json",
        // Allow libglvnd files and libs.
        "/usr/share/glvnd/egl_vendor.d",
        "/usr/share/glvnd/egl_vendor.d/50_mesa.json",
