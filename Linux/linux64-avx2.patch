@@ -315,23 +315,6 @@ index 2e53794fa3374..1786fda6f463d 100644
        // Allow libglvnd files and libs.
        "/usr/share/glvnd/egl_vendor.d",
        "/usr/share/glvnd/egl_vendor.d/50_mesa.json",
-diff --git a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc b/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
-index 2605b0e267a0e..8bf1a184040d2 100644
---- a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
-+++ b/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
-@@ -246,9 +246,9 @@ GLOzone* WaylandSurfaceFactory::GetGLOzone(
- std::unique_ptr<gpu::VulkanImplementation>
- WaylandSurfaceFactory::CreateVulkanImplementation(bool use_swiftshader,
-                                                   bool allow_protected_memory) {
--  LOG_IF(ERROR, !use_swiftshader)
--      << "'--ozone-platform=wayland' is not compatible with Vulkan. "
--         "Consider switching to '--ozone-platform=x11' or disabling Vulkan";
-+  // LOG_IF(ERROR, !use_swiftshader)
-+  //     << "'--ozone-platform=wayland' is not compatible with Vulkan. "
-+  //        "Consider switching to '--ozone-platform=x11' or disabling Vulkan";
-   return std::make_unique<VulkanImplementationWayland>(use_swiftshader);
- }
- #endif
 diff --git a/media/base/supported_types.cc b/media/base/supported_types.cc
 index c4d25f792f306..ab611e67ed793 100644
 --- a/media/base/supported_types.cc
@@ -483,3 +466,20 @@ index 8e650078a5816..6614714c08c78 100644
  
  // When enabled, allows AV1 HW encoding to be used for WebRTC streams, if the
  // platform accelerator supports encoding of AV1.
+diff --git a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc b/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
+index 2605b0e267a0e..8bf1a184040d2 100644
+--- a/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
++++ b/ui/ozone/platform/wayland/gpu/wayland_surface_factory.cc
+@@ -246,9 +246,9 @@ GLOzone* WaylandSurfaceFactory::GetGLOzone(
+ std::unique_ptr<gpu::VulkanImplementation>
+ WaylandSurfaceFactory::CreateVulkanImplementation(bool use_swiftshader,
+                                                   bool allow_protected_memory) {
+-  LOG_IF(ERROR, !use_swiftshader)
+-      << "'--ozone-platform=wayland' is not compatible with Vulkan. "
+-         "Consider switching to '--ozone-platform=x11' or disabling Vulkan";
++  // LOG_IF(ERROR, !use_swiftshader)
++  //     << "'--ozone-platform=wayland' is not compatible with Vulkan. "
++  //        "Consider switching to '--ozone-platform=x11' or disabling Vulkan";
+   return std::make_unique<VulkanImplementationWayland>(use_swiftshader);
+ }
+ #endif
