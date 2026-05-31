@@ -184,7 +184,7 @@ index 101c2339697ca..e5859690dc5d0 100644
 +        "-mno-scatter",
 +        "-mno-bmi2",
 +        "/clang:-w",
-+    ]
++      ]
      }
  
      # Enable ANSI escape codes if something emulating them is around (cmd.exe
