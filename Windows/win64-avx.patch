@@ -141,17 +141,25 @@ index ae62bab587e7d..4769d5bdec4ff 100644
          is_a_target_toolchain) {
        cpu_abi_cflags += [ "-march=$cros_target_cpu_arch" ]
 diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
-index 101c2339697ca..85aa000adfee5 100644
+index 101c2339697ca..65ef32a292d8a 100644
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
-@@ -120,7 +120,13 @@ config("compiler") {
+@@ -120,7 +120,21 @@ config("compiler") {
      # microarchitecture. MSVC only supports a subset of architectures, and the
      # next step after SSE2 will be AVX.
      if (current_cpu == "x86" || current_cpu == "x64") {
 -      cflags += [ "-msse3" ]
 +      cflags += [
-+        "-march=x86-64-v2",
++        "-mtune=sandybridge",
++        "-msse3",
++        "-mssse3",
++        "-msse4.1",
++        "-msse4.2",
++        "-mpopcnt",
++        "-mcx16",
++        "-msahf",
 +        "-mavx",
++        "-mxsave",
 +        "-mno-gather",
 +        "-mno-scatter",
 +        "/clang:-w",
@@ -357,3 +365,10 @@ index 8e650078a5816..6614714c08c78 100644
  
  // When enabled, allows AV1 HW encoding to be used for WebRTC streams, if the
  // platform accelerator supports encoding of AV1.
+diff --git a/third_party/ffmpeg b/third_party/ffmpeg
+index ad41607c61898..a87f87d880452 160000
+--- a/third_party/ffmpeg
++++ b/third_party/ffmpeg
+@@ -1 +1 @@
+-Subproject commit ad41607c61898cf7150e0fb20fe4bbabd44922a3
++Subproject commit a87f87d880452edb43738d90ae2948ba1c22581e
