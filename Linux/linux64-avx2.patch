@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index e1da11405c1f6..74a22bc4399d3 100644
+index e1da11405c1f6..0c6354810966a 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -529,10 +529,10 @@ config("compiler") {
@@ -85,15 +85,6 @@ index e1da11405c1f6..74a22bc4399d3 100644
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1308,7 +1339,7 @@ config("thinlto_optimize_max") {
-       # Rust to preemptively do so during compilation too or they conflict. But
-       # we do want Rust to generate LTO metadata in order for the linker to do
-       # its job.
--      rustflags = [ "-Clinker-plugin-lto=yes" ]
-+      rustflags = [ "-Clinker-plugin-lto=yes", ]
-     } else {
-       # Don't include bitcode if it won't be used.
-       rustflags = [ "-Cembed-bitcode=no" ]
 @@ -1723,7 +1754,7 @@ config("runtime_library") {
    }
  
