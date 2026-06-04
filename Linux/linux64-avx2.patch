@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index e1da11405c1f6..0c6354810966a 100644
+index e1da11405c1f6..8c474ab041e8a 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -529,10 +529,10 @@ config("compiler") {
@@ -38,7 +38,7 @@ index e1da11405c1f6..0c6354810966a 100644
    ]
  
    if (!is_win || force_rustc_color_output) {
-@@ -1260,12 +1265,23 @@ config("disallow_unstable_features") {
+@@ -1260,12 +1265,24 @@ config("disallow_unstable_features") {
  # building with ThinLTO, no optimization is performed in the link step.
  config("thinlto_optimize_default") {
    if (!is_debug && use_thin_lto && is_a_target_toolchain) {
@@ -59,11 +59,12 @@ index e1da11405c1f6..0c6354810966a 100644
 +        "-Wl,-mllvm,-x86-align-branch-boundary=32",
 +        "-Wl,-mllvm,-x86-align-branch=jcc+jmp+indirect",
 +        "-Wl,-z,pack-relative-relocs",
++        "-Wl,-mllvm,-polly",
 +      ]
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1301,6 +1317,21 @@ config("thinlto_optimize_max") {
+@@ -1301,6 +1318,22 @@ config("thinlto_optimize_max") {
        ldflags = [ "/opt:lldlto=" + lto_opt_level ]
      } else {
        ldflags = [ "-Wl,--lto-O" + lto_opt_level ]
@@ -81,11 +82,12 @@ index e1da11405c1f6..0c6354810966a 100644
 +        "-Wl,-mllvm,-x86-align-branch=jcc+jmp+indirect",
 +        "-Wl,-mllvm,-x86-cmov-converter",
 +        "-Wl,-z,pack-relative-relocs",
++        "-Wl,-mllvm,-polly",
 +      ]
      }
  
      if (toolchain_supports_rust_thin_lto) {
-@@ -1723,7 +1754,7 @@ config("runtime_library") {
+@@ -1723,7 +1756,7 @@ config("runtime_library") {
    }
  
    if (use_safe_libcxx) {
@@ -94,7 +96,7 @@ index e1da11405c1f6..0c6354810966a 100644
    } else {
      defines += [ "_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_NONE" ]
    }
-@@ -2645,7 +2676,7 @@ config("optimize_max") {
+@@ -2645,7 +2678,7 @@ config("optimize_max") {
    } else if (optimize_for_fuzzing) {
      cflags = [ "-O1" ] + common_optimize_on_cflags
    } else {
@@ -448,10 +450,10 @@ index eaf9f1c3c4490..11c15546d316d 100644
  
  FFmpegVideoDecoder::FFmpegVideoDecoder(std::unique_ptr<MediaLog> media_log)
 diff --git a/media/webrtc/webrtc_features.cc b/media/webrtc/webrtc_features.cc
-index 8e650078a5816..6614714c08c78 100644
+index 9547366160bc7..5215339db9607 100644
 --- a/media/webrtc/webrtc_features.cc
 +++ b/media/webrtc/webrtc_features.cc
-@@ -59,12 +59,12 @@ BASE_FEATURE(kWebRtcAllowH265Receive, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -44,12 +44,12 @@ BASE_FEATURE(kWebRtcAllowH265Receive, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // When enabled, allows H.265 L1T2 to be used for sending WebRTC streams, if the
  // accelerator reports support of encoding in L1T2.
